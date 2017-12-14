@@ -25,6 +25,9 @@ the implementation implicitly generates salt based on a secure random byte array
 
 Usage
 
+Be sure that you have argon2 development C library is installed correctly along with its header
+on your system, then get the this library:
+
   $ go get -u github.com/adzr/argon2go
 
 Then, import the package:
