@@ -6,14 +6,12 @@ go:
   - master
 
 before_install:
-  - go get github.com/mattn/goveralls
-  - wget -qO- https://github.com/P-H-C/phc-winner-argon2/archive/20161029.tar.gz | tar -xvz -C $HOME/. && cd $HOME/phc-winner-argon2-20161029/.
-  - sudo apt-get -qq update
-  - sudo apt-get install -y gcc clang make
-  - make && sudo make install
-  - cd /usr/lib/.
-  - sudo ln -s libargon2.so libargon2.so.0
-  - cd $TRAVIS_BUILD_DIR
+  - sudo apt-get -qq update && sudo apt-get install -y gcc clang make
+  - wget -qO- https://github.com/P-H-C/phc-winner-argon2/archive/20171227.tar.gz | tar -xvz -C $HOME/. && ( cd $HOME/phc-winner-argon2-20171227/. && make && sudo make install )
+  - ( cd /usr/lib/. && sudo ln -s libargon2.so libargon2.so.0 )
 
 script:
-  - $HOME/gopath/bin/goveralls -service=travis-ci
+  - go test -v -race -covermode=atomic -coverprofile=coverage.txt ./...
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
